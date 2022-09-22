@@ -1,0 +1,1 @@
+export type ChangeListener<T> = (type: string, data: T ) => void;

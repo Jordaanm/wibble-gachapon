@@ -1,0 +1,88 @@
+@mixin bgImage($url: '') {
+  background-image: url($url);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;  
+}
+
+.gacha-machine {
+  position: relative;
+  
+  .machine {
+    @include bgImage('/public/machine.png');  
+    width: 269px;
+    height: 542px;
+  }
+  
+  .title-plate {
+    position: absolute;
+    left: 0;
+    top: 0;  
+  }
+  
+  .title-plate--label {
+    width: 100%;
+    margin: 10px 30px;
+    font-size: 20px;
+    color: #444;
+    font-weight: 600;
+    background-color: #DDD;
+    border: 3px solid #BBB;
+    border-radius: 5px;
+  }
+  
+  .dial {
+    @include bgImage('/public/dial.png');
+  
+    position: absolute;
+    left: 84.5px;
+    top: 345px;
+    width: 100px;
+    height: 100px;
+    transform: rotate(0deg);
+    transition: all 0.2s;
+    cursor: pointer;
+
+    &:active {
+      transform: rotate(180deg);
+      transition: all 3s;
+    }
+  }
+
+  .credits {
+    position: absolute;
+    left: 190px;
+    top: 350px;
+    font-size: 1.2rem;
+    width: 4rem;
+    height: 2rem;
+    background-color: #000;
+    cursor: pointer;
+
+    & .credits--label {
+      position: relative;
+      top: 2rem;
+
+      padding: 1rem;
+      padding-top: 1.5rem;
+      background-color: #DDD;
+      border-radius: 5px;
+      border: 2px solid #666;           
+      color: #B46;
+      font-weight: 500;
+      font-size: 1.5rem;
+
+      &:before {
+        font-size: 1.1rem;
+        text-align: center;
+        position: absolute;
+        content: 'Credits';
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+
+    }
+  }
+}
+
