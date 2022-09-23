@@ -26,15 +26,12 @@ export function GachaMachine() {
   });
 
   const onDialPress = () => {
-    console.log("Dial:StartingTimer");
     dialTimer = setTimeout(() => {
       gachaModel?.PerformRollAll();
     }, 2500);
   }
 
-  const onDialRelease = () => { 
-    
-    console.log("Dial:ClearingTimer");
+  const onDialRelease = () => {     
     clearTimeout(dialTimer); 
   }
 

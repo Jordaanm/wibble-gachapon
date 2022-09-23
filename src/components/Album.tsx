@@ -26,8 +26,6 @@ export const Album = () => {
     }
   }) || [];
 
-  console.log("All Wibbles", allWibbles);
-
   return (
     <>
       <Button onClick={openDialog}>Album</Button>

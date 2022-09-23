@@ -10,7 +10,6 @@ export interface GachaData {
 }
 
 const dataMapper = (rawSheetData: any[]): GachaData => {
-  console.log(rawSheetData);
   const dropRates = rawSheetData.find(x => x.id === "DropRates")?.data.map((x: any): DropRate => {
     return {
       rarity: Number.parseInt(x.Rarity, 10),
