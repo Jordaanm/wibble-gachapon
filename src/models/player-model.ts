@@ -17,13 +17,22 @@ export enum PlayerEvents {
   AddCredits = "AddCredits",
   PayCredits = "PayCredits",
   ReceiveWibble = "ReceiveWibble",
+  ClearNotifications = "ClearNotifications"
+}
+
+export interface ReceivedDropNotification {
+  dropInfo: DropInfo;
+  isNew: boolean;
+  viewed: boolean;
 }
 
 export class PlayerModel {
   drops: {[key: string]: PlayerDropInfo}
   inventory: {[key: string]: number}
   credits: number;
-  private listeners: ChangeListener<PlayerModel>[] = [];
+  receivedDropNotifications: ReceivedDropNotification[] = [];
+
+  private listeners: {[key: string]: ChangeListener<PlayerModel>}= {};
 
   constructor() {
     this.drops = {};
@@ -31,12 +40,12 @@ export class PlayerModel {
     this.credits = 0;
   }
 
-  public AddListener(listener: ChangeListener<PlayerModel>): void {
-    this.listeners.push(listener);
+  public AddListener(name: string, listener: ChangeListener<PlayerModel>): void {
+    this.listeners[name] = listener;
   }
 
   public Publish(eventName: string) {
-    this.listeners.forEach(listener => listener(eventName, this));
+    Object.values(this.listeners).forEach(listener => listener(eventName, this));
   }
 
 
@@ -75,18 +84,31 @@ export class PlayerModel {
     payload.forEach((d) => this.ReceiveDrop(d));
   }
 
-  public ReceiveDrop(wibble: DropInfo) {
-    if(!this.drops[wibble.id]) {
-      this.drops[wibble.id] = {
-        id: wibble.id,
+  public ReceiveDrop(drop: DropInfo) {
+    const notif: ReceivedDropNotification = {
+      dropInfo: drop,
+      isNew: false,
+      viewed: false
+    };
+
+    if(!this.drops[drop.id]) {
+      this.drops[drop.id] = {
+        id: drop.id,
         firstReceived: (new Date()).getTime(),
         totalReceived: 1 
       };
+      notif.isNew = true;
     } else {
-      this.drops[wibble.id].totalReceived += 1;
+      this.drops[drop.id].totalReceived += 1;
     }
 
-    console.log("You received a wibble: " + wibble.id, wibble);
+    console.log("You received a drop: " + drop.id, drop);
+    this.receivedDropNotifications.push(notif);
     this.Publish(PlayerEvents.ReceiveWibble);
+  }
+
+  public ClearNotifications() {
+    this.receivedDropNotifications.splice(0, this.receivedDropNotifications.length);
+    this.Publish(PlayerEvents.ClearNotifications);
   }
 }

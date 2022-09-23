@@ -39,6 +39,10 @@ export class GachaModel {
     }
   }
 
+  public PerformRollAll() {
+    this.PerformRoll(this.player.Credits());
+  }
+
   RollResults(amount: number): DropInfo[] {
     const results: DropInfo[] = [];
     for(let x = 0; x < amount; ++x) {

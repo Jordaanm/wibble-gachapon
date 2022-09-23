@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { GachaModelContext } from '../contexts/gacha-context';
 import { PlayerContext } from '../contexts/player-context';
-import { PlayerEvents } from '../models/player-model';
+import { PlayerEvents, ReceivedDropNotification } from '../models/player-model';
 import './GachaMachine.scss';
+import { WibbleDropModal } from './WibbleDropModal';
 
 let dialTimer: number|undefined = undefined;
 
@@ -11,11 +12,15 @@ export function GachaMachine() {
   const playerModel = React.useContext(PlayerContext);
 
   const [credits, setCredits] = React.useState<number>(playerModel.Credits());
+  const [notifications, setNotifications] = React.useState<ReceivedDropNotification[]>(playerModel.receivedDropNotifications);
 
   React.useEffect(() => {
-    playerModel.AddListener((eventName, data) => {
+    playerModel.AddListener('GachaMachine', (eventName, data) => {
       if(eventName === PlayerEvents.AddCredits || eventName === PlayerEvents.PayCredits) {
         setCredits(playerModel.Credits());
+      }
+      else {
+        setNotifications([...playerModel.receivedDropNotifications]);
       }
     });
   });
@@ -23,7 +28,7 @@ export function GachaMachine() {
   const onDialPress = () => {
     console.log("Dial:StartingTimer");
     dialTimer = setTimeout(() => {
-      gachaModel?.PerformRoll(1);
+      gachaModel?.PerformRollAll();
     }, 2500);
   }
 
@@ -44,7 +49,8 @@ export function GachaMachine() {
         <div className="title-plate">
           <div className="title-plate--label">Wibble Gacha</div>
         </div>
-      </div>
+      </div>      
+      <WibbleDropModal notifications={notifications} />
     </div>
   );
 }
