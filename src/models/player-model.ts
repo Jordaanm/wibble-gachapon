@@ -17,7 +17,8 @@ export enum PlayerEvents {
   AddCredits = "AddCredits",
   PayCredits = "PayCredits",
   ReceiveWibble = "ReceiveWibble",
-  ClearNotifications = "ClearNotifications"
+  ClearNotifications = "ClearNotifications",
+  ViewNotification = "ViewNotification",
 }
 
 export interface ReceivedDropNotification {
@@ -110,5 +111,10 @@ export class PlayerModel {
   public ClearNotifications() {
     this.receivedDropNotifications.splice(0, this.receivedDropNotifications.length);
     this.Publish(PlayerEvents.ClearNotifications);
+  }
+
+  public ViewNotification(index: number) {
+    this.receivedDropNotifications[index].viewed = true;
+    this.Publish(PlayerEvents.ViewNotification);
   }
 }

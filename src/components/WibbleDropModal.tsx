@@ -23,6 +23,14 @@ export const WibbleDropModal = (props: WibbleDropModalProps) => {
     text: "Close",
   }
 
+  const onChange = (id:string) => {
+    const index = Number.parseInt(id.substring(5), 10);
+    if(index && index > 0) {
+      playerModel.ViewNotification(index);
+
+    }
+  }
+
   return <MultistepDialog 
     className="received-drop-modal" 
     icon="info-sign" 
@@ -32,6 +40,7 @@ export const WibbleDropModal = (props: WibbleDropModalProps) => {
     finalButtonProps={finalButtonProps}
     title="More Wibbles!"
     isOpen={notifications.length > 0}
+    onChange={onChange}
   >
     {notifications.map((notif, i) => WibbleDropStep(notif, i))}
   </MultistepDialog>
@@ -67,6 +76,6 @@ const WibbleDropStep = (notification: ReceivedDropNotification, index: number) =
     key={`dialog-step-${index}-${id}`}
     id={`step-${index}`}
     panel={panel}
-    title={notification.viewed ? name : '???'}
+    title={notification.viewed || index == 0 ? name : '???'}
   />
 }
