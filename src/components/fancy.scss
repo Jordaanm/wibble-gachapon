@@ -1,0 +1,155 @@
+.fullsize {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.background {
+  @extend .fullsize;
+  z-index: 0;  
+  background: radial-gradient(circle, #24246e, #06051f);
+}
+
+$colors: (
+  purple: #241379,
+  medium-blue: #2185bf,
+  light-blue: #1fbce1,
+
+  red: #b62f56,
+  orange: #d5764c,
+  yellow: #ffd53e,
+
+  cyan: #78ffba,
+  light-green: #98fd85,
+  lime: #befb46,
+
+  magenta: #6c046c,
+  lightish-red: #f04c81,
+  pink: #ff4293,
+
+  gold: gold,
+  goldenrod: goldenrod,
+);
+
+body {
+  overflow: hidden;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+.background {
+  div,
+  div::before,
+  div::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform-origin: top;
+    transition: all 5s linear 0s;
+  }
+  overflow: hidden;
+}
+
+@function random-num($min, $max) {
+  @return floor(random() * ($max - $min) + $min);
+}
+
+@function random-calc($number) {
+  $x: $number * 0.25;
+  $max: 25 - $x;
+  $min: $x * -1;
+  @return random-num($min, $max);
+}
+
+@each $color-name, $color-hex in $colors {
+  // Initial top and left positions
+  $random1: random(100);
+  $random2: random(100);
+
+  // Animated top and left positions
+  $random3: random(100);
+  $random4: random(100);
+  
+  // Animated top and left end positions
+  $random5: random(100);
+  $random6: random(100);
+
+  .#{$color-name} {
+    $size: random-num(5,50) + px;
+    animation: #{$color-name} linear 30s alternate infinite;
+    border: 2px solid #{$color-hex};
+    border-radius: 100%;
+    width: $size;
+    height: $size;
+    transform: translate3d(
+      $random1 + vw,
+      $random2 + vh,
+      0);
+    z-index: random(12) - 13;
+  }
+
+  .#{$color-name}::before {
+    animation: #{$color-name}-pseudo linear 15s alternate infinite;
+    background: #{$color-hex};
+    border: 2px solid #{$color-hex};
+    width: random-num(5,50) + px;
+    height: random-num(5,50) + px;
+    transform:
+      translate3d(
+        random-calc($random1) + vw,
+        random-calc($random2) + vh,
+        0)
+      rotate((random(360)) + deg);
+  }
+
+  .#{$color-name}::after{
+    animation: #{$color-name}-pseudo linear 20s alternate infinite;
+    border: 2px solid #{$color-hex};
+    width: random-num(5,50) + px;
+    height: random-num(5,50) + px;
+    transform:
+      translate3d(
+        random-calc($random1) + vw,
+        random-calc($random2) + vh,
+        0)
+      rotate((random(360)) + deg);
+  }
+
+  @keyframes #{$color-name} {
+    50% {
+      transform: translate3d(
+        $random3 + vw,
+        $random4 + vh,
+        0);
+    }
+    100% {
+      transform: translate3d(
+        $random5 + vw,
+        $random6 + vh,
+        0);
+    }
+  }
+
+  @keyframes #{$color-name}-pseudo {
+    33% {
+      transform:
+        translate3d(
+          random-calc($random3) + vw,
+          random-calc($random4) + vh,
+          0)
+        rotate((random(360)) + deg);
+    }
+    100% {
+      transform:
+        translate3d(
+          random-calc($random5) + vw,
+          random-calc($random6) + vh,
+          0)
+        rotate((random(360)) + deg);
+    }
+  }
+}

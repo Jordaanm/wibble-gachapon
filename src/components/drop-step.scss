@@ -1,0 +1,94 @@
+.drop-step-panel {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  margin: 0 0.5rem;
+  min-height: 20rem;
+  height: 100%;
+  color: #DDD;
+
+  .content {
+    z-index: 1;
+  }
+
+  .row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 3rem;
+    font-weight: 600;
+  }
+
+  .badge {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: rotate(-30deg);
+    border-radius: 12px;
+    border:3px solid gold;
+    background-color: #444;
+    padding: 0.5rem;
+    font-weight: 600;
+    color: gold;
+  }
+
+  .rarity-row {
+    justify-content: center;
+    border-bottom: 2px solid gold;
+    border-top: 2px solid gold;
+    color: gold;
+    background-color: #444;
+  }
+
+  .rarity {
+    font-size: 2rem;
+    line-height: 2.8rem;
+    padding-bottom: 0.25rem;
+    &.rarity-1::after {
+      content:'☆';      
+    }
+    &.rarity-2::after {
+      content:'☆☆';      
+    }
+    &.rarity-3::after {
+      content:'☆☆☆';      
+    }
+    &.rarity-4::after {
+      content:'☆☆☆☆';      
+    }
+    &.rarity-5::after {
+      content:'☆☆☆☆☆';      
+    }
+  }
+
+  .title-row {
+    justify-content: center;
+    margin: 0 0.5rem;
+    padding-bottom: 1rem;
+  }
+
+
+  .type-row .label {
+    font-weight: 200;
+    padding-right: 1rem;;
+  }
+
+  .type {
+    flex: 1;
+    font-weight: 400;
+  }
+
+  .type-row {
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .description-row {
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
+}
