@@ -13,8 +13,11 @@ export class GachaModel {
     this.dropTable = dropTable;
   }
 
+  public GetAllDrops(): DropInfo[] {
+    return this.dropTable;
+  }
+
   public AddCredits(amount: number) { 
-    console.log("GachaModel::AddCredits", amount, this.player);
     if(!this.EnsurePlayer()) { return; }
 
     this.player.AddCredits(amount);
@@ -29,7 +32,6 @@ export class GachaModel {
   public PerformRoll(amount: number) {
     if(!this.EnsurePlayer()) { return; }
 
-    console.log("GachaModel::PerformRoll", amount, this.player);
     if(this.player.Credits() >= amount) {
       
       const results: DropInfo[] = this.RollResults(amount);

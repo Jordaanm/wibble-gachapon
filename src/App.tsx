@@ -2,8 +2,8 @@ import './App.css'
 import "@blueprintjs/core/lib/css/blueprint.css";
 import { GachaMachine } from './components/GachaMachine'
 import { GachaDataLoader } from './components/GachaSheetDataLoader'
-import { WibbleDropModal } from './components/WibbleDropModal'
 import { PlayerLoader } from './contexts/player-context'
+import { Album } from './components/Album';
 
 function App() {
   return (
@@ -13,16 +13,11 @@ function App() {
         <GachaDataLoader>
           <>
             <GachaMachine />
+            <Album />
           </>
         </GachaDataLoader>
       </PlayerLoader>
       <div>
-        <button>
-          History
-        </button>
-        <button>
-          Gallery
-        </button>
       </div>
     </div>
   )

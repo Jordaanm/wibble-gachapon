@@ -1,7 +1,8 @@
 export enum DropType {
   Wibble = "Wibble",
   TinyWib = "Tiny Wib",
-  Wibblet = "Wibblet"
+  Wibblet = "Wibblet",
+  Other = "Other"
 }
 
 export enum DropRarity {

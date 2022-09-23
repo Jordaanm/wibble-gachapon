@@ -59,6 +59,19 @@ export class PlayerModel {
     }
   }
 
+  private Save() {
+    const data = this.BuildSaveState();
+    localStorage.setItem('player', JSON.stringify(data));
+  }
+
+  public Load() {
+    const json = localStorage.getItem('player');
+    if(json) {
+      const playerState = JSON.parse(json);
+      this.LoadFromState(playerState);
+    }
+  }
+
   public LoadFromState(state: PlayerSave) {
     const {drops, inventory, credits} = state;
     this.inventory = inventory;
@@ -70,7 +83,6 @@ export class PlayerModel {
   }
 
   public AddCredits(amount: number) { 
-    console.log("PlayerModel::AddCredits", amount);
     this.credits += amount;
     this.Publish(PlayerEvents.AddCredits);
   }
@@ -103,8 +115,8 @@ export class PlayerModel {
       this.drops[drop.id].totalReceived += 1;
     }
 
-    console.log("You received a drop: " + drop.id, drop);
     this.receivedDropNotifications.push(notif);
+    this.Save();
     this.Publish(PlayerEvents.ReceiveWibble);
   }
 

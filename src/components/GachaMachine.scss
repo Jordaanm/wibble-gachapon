@@ -24,13 +24,11 @@
   }
   
   .title-plate {
-    position: absolute;
-    left: 0;
-    top: 0;  
+    width: 100%;
   }
   
   .title-plate--label {
-    width: 100%;
+    width: auto;
     margin: 10px 30px;
     font-size: 20px;
     color: #444;
