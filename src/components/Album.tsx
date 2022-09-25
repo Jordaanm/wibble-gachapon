@@ -13,6 +13,8 @@ interface AlbumInfo {
 
 export const Album = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const [selectedItem, setSelectedItem] = React.useState<AlbumInfo|null>(null);
+
   const playerModel = React.useContext(PlayerContext);
   const gachaModel = React.useContext(GachaModelContext);
 
@@ -27,19 +29,65 @@ export const Album = () => {
   }) || [];
 
   return (
-    <>
+    <div className="album-section">
       <Button onClick={openDialog}>Album</Button>
-      <Dialog title="Album" isOpen={isOpen} canOutsideClickClose={true} onClose={closeDialog}>
-        <div className="album grid">
-          { allWibbles.map(x => <AlbumItem info={x}/>)}
+      <Dialog title="Album" isOpen={isOpen} canOutsideClickClose={true} onClose={closeDialog} className="album-modal">
+        <div className="album-modal-layout">
+          <div className="album">
+            { allWibbles.map(x => <AlbumItem info={x} select={setSelectedItem}/>)}
+          </div>
+          <div className="details">
+            {selectedItem && (
+              <AlbumInfoView info={selectedItem} />
+            )}
+          </div>
         </div>
       </Dialog>
-    </>
+    </div>
   );
 }
 
-const AlbumItem = (props: {info: AlbumInfo}) => {
+const AlbumInfoView = (props: {info: AlbumInfo}) => {
   const {info} = props;
+  const { playerInfo, tableInfo} = info;
+  const { name, rarity, description, type } = tableInfo;
+
+  const firstReceived = playerInfo?.firstReceived;
+  let dateString = "Never";
+  if(firstReceived && firstReceived > 0) {
+    const date = new Date(firstReceived);
+    dateString = date.toDateString();
+  }
+
+  return (
+    <div className='album-info'>
+      <div className="content">
+        <div className="title-row row">
+          <span className='title'>{name}</span>
+        </div>
+        <div className="rarity-row row">
+          <span className={`rarity rarity-${rarity}`}></span>
+        </div>
+        <div className="type-row row">
+          <span className="label">Type: </span>
+          <span className="type">{type}</span>
+        </div>
+        <div className='description-row row'>
+          <p className='description'>{description}</p>
+        </div>
+      </div>
+      {playerInfo && (
+        <div className="stats">
+          <span>Total: {playerInfo.totalReceived}</span>
+          <span>First: {dateString}</span>
+        </div>
+      )}
+    </div>
+  )
+};
+
+const AlbumItem = (props: {info: AlbumInfo, select: (item:AlbumInfo) => void}) => {
+  const {info, select} = props;
   const {tableInfo, playerInfo} = info;
 
   const hasAny = Boolean(playerInfo?.totalReceived);
@@ -51,21 +99,13 @@ const AlbumItem = (props: {info: AlbumInfo}) => {
     dateString = date.toDateString();
   }
 
-  return <div className="grid-item">
+  return <div className="grid-item" key={tableInfo.id} onClick={() => select(info)}>
     <div className="container">
       <div className="row title-row">
         <div className="title">
           {hasAny? tableInfo.name : '???'}
         </div>
       </div>
-      {playerInfo && (
-        <div className="row stats-row">
-          <div className="stats">
-            <span>Total: {playerInfo.totalReceived}</span>
-            <span>First: {dateString}</span>
-          </div>
-        </div>
-      )}
     </div>
   </div>
 }
