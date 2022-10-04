@@ -23,3 +23,30 @@ export const AnimatedBackground = () => {
     <div className="goldenrod"></div>
   </div>
 };
+
+export const Bokeh = () => {
+  return (
+    <div className="bokeh">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  )
+}

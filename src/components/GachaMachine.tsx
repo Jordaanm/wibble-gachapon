@@ -1,3 +1,4 @@
+import { Tooltip } from '@blueprintjs/core';
 import * as React from 'react';
 import { GachaModelContext } from '../contexts/gacha-context';
 import { PlayerContext } from '../contexts/player-context';
@@ -35,6 +36,14 @@ export function GachaMachine() {
     clearTimeout(dialTimer); 
   }
 
+  const info = (
+    <ul>
+      <li>Click on Credits to insert cans</li>
+      <li>Hold down on the dial to spend credits</li>
+      <li>Press the Collection button to see your collection of Wibbles</li>
+    </ul>
+  )
+
   return (
     <div className="gacha-machine">
       <div className="machine">
@@ -46,6 +55,9 @@ export function GachaMachine() {
         <div className="title-plate">
           <h1 className="title-plate--label">Wibble Gacha</h1>
         </div>
+        <Tooltip content={info}>
+          <div className="info-button">i</div>
+        </Tooltip>
       </div>      
       <WibbleDropModal notifications={notifications} />
     </div>

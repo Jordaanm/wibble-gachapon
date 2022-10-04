@@ -30,8 +30,8 @@ export const Album = () => {
 
   return (
     <div className="album-section">
-      <Button onClick={openDialog}>Album</Button>
-      <Dialog title="Album" isOpen={isOpen} canOutsideClickClose={true} onClose={closeDialog} className="album-modal">
+      <Button onClick={openDialog}>Collection</Button>
+      <Dialog title="Your Wibble Collection" isOpen={isOpen} canOutsideClickClose={true} onClose={closeDialog} className="album-modal">
         <div className="album-modal-layout">
           <div className="album">
             { allWibbles.map(x => <AlbumItem key={x.tableInfo.id} info={x} select={setSelectedItem}/>)}
@@ -57,6 +57,8 @@ const AlbumInfoView = (props: {info: AlbumInfo}) => {
   if(firstReceived && firstReceived > 0) {
     const date = new Date(firstReceived);
     dateString = date.toDateString();
+  } else {
+    return <h2>???</h2>
   }
 
   return (

@@ -1,3 +1,4 @@
+import { Tooltip } from '@blueprintjs/core';
 import * as React from 'react';
 import { PlayerContext } from '../contexts/player-context';
 import { PlayerEvents } from '../models/player-model';
@@ -19,8 +20,12 @@ export function CansDisplay() {
   });
 
   return (
-    <div className="cans-display">
-      <img src="/can.png"/> x <span className='amount'>{cans}</span>
-    </div>
+    <Tooltip content="Generate more Stinky Fish Cans every hour">
+      <div className="cans-display">
+          <>
+            <img src="/can.png"/> x <span className='amount'>{cans}</span>
+          </>
+      </div>
+    </Tooltip>
   );
 }

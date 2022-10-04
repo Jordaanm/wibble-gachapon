@@ -2,7 +2,7 @@ import { ChangeListener } from "./change-listener";
 import { DropInfo } from "./drops";
 
 export const STARTING_CANS = 24;
-export const NEW_CAN_PERIOD = 3600;
+export const NEW_CAN_PERIOD = 3600000;
 
 export interface PlayerDropInfo {
   id: string;

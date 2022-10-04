@@ -1,3 +1,8 @@
+.bp4-multistep-dialog-left-panel {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
 .grid {
   display: flex;
   flex-direction: row;
@@ -17,15 +22,23 @@
 .album-modal-layout {
   display: flex;
   flex: 1;
+  font-family: "Heebo", cursive;
   .album {
     width: 15rem;
     height: auto;
     overflow-y: scroll;
+    max-height: 80vh;
   }
   .details {
     flex: 1;
     min-height: 30rem;
     max-height: 30rem;
+    h2 {
+      text-align: center;
+      padding: 0.25rem;
+      font-size: 3rem;
+      font-weight: 600;
+    }
   }
 }
 .album {
@@ -48,11 +61,13 @@
   .stats {
     display: flex;
     flex-direction: column;
+    padding: 0.5rem;
+    text-align: right;
   }
 } 
 
 .album-section {
-  margin-top: 2rem;
+  margin-bottom: 2rem;
 
   button {
     font-size: 2rem;
