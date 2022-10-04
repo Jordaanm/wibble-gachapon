@@ -44,7 +44,7 @@ export function GachaMachine() {
           <div className="credits--label">{credits}</div>
         </div>
         <div className="title-plate">
-          <div className="title-plate--label">Wibble Gacha</div>
+          <h1 className="title-plate--label">Wibble Gacha</h1>
         </div>
       </div>      
       <WibbleDropModal notifications={notifications} />

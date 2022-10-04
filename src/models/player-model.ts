@@ -1,6 +1,9 @@
 import { ChangeListener } from "./change-listener";
 import { DropInfo } from "./drops";
 
+export const STARTING_CANS = 24;
+export const NEW_CAN_PERIOD = 3600;
+
 export interface PlayerDropInfo {
   id: string;
   firstReceived: number;
@@ -11,6 +14,8 @@ export interface PlayerSave {
   drops: PlayerDropInfo[];
   inventory: {[key: string]: number}
   credits: number;
+  cans: number;
+  lastLogin: number;
 }
 
 export enum PlayerEvents {
@@ -19,6 +24,8 @@ export enum PlayerEvents {
   ReceiveWibble = "ReceiveWibble",
   ClearNotifications = "ClearNotifications",
   ViewNotification = "ViewNotification",
+  AddCans = "AddCans",
+  NewGame = "NewGame",
 }
 
 export interface ReceivedDropNotification {
@@ -32,6 +39,8 @@ export class PlayerModel {
   inventory: {[key: string]: number}
   credits: number;
   receivedDropNotifications: ReceivedDropNotification[] = [];
+  cans: number;
+  lastLogin: number;
 
   private listeners: {[key: string]: ChangeListener<PlayerModel>}= {};
 
@@ -39,6 +48,8 @@ export class PlayerModel {
     this.drops = {};
     this.inventory = {};
     this.credits = 0;
+    this.cans = 0;
+    this.lastLogin = 0;
   }
 
   public AddListener(name: string, listener: ChangeListener<PlayerModel>): void {
@@ -51,11 +62,13 @@ export class PlayerModel {
 
 
   public BuildSaveState(): PlayerSave {
-    const { inventory, credits, drops } = this;
+    const { inventory, credits, drops, cans, lastLogin } = this;
     return {
       drops: Object.values(drops),
       inventory,
       credits,
+      cans,
+      lastLogin
     }
   }
 
@@ -66,26 +79,62 @@ export class PlayerModel {
 
   public Load() {
     const json = localStorage.getItem('player');
+    const currentTime = this.getTimestamp();
     if(json) {
       const playerState = JSON.parse(json);
-      this.LoadFromState(playerState);
+      this.LoadFromState(playerState, currentTime);
+    } else {
+      // New Game
+      this.NewGame();
     }
   }
 
-  public LoadFromState(state: PlayerSave) {
-    const {drops, inventory, credits} = state;
+  private NewGame() {
+    this.lastLogin = this.getTimestamp();
+    this.cans = STARTING_CANS;
+    this.Save();
+    this.Publish(PlayerEvents.NewGame);
+  }
+
+  private getTimestamp(): number {
+    return (new Date()).getTime();
+  }
+
+  public LoadFromState(state: PlayerSave, currentTime: number) {
+    const {drops, inventory, credits, cans, lastLogin} = state;
     this.inventory = inventory;
     this.credits = credits;
+    this.cans = cans;
+    this.lastLogin = lastLogin;
     this.drops = drops.reduce((obj, drop) => {
       obj[drop.id] = drop;
       return obj;
     }, {} as {[key: string]: PlayerDropInfo});
+
+    this.onLogin(currentTime, lastLogin);
+  }
+
+  public onLogin(currentTime: number, lastLogin: number) {
+    const currentTick = Math.floor(currentTime / NEW_CAN_PERIOD)
+    const prevTick = Math.floor(lastLogin / NEW_CAN_PERIOD);
+    const newCans = currentTick - prevTick;
+
+    this.AddCans(newCans);
+  }
+
+  private AddCans(amount: number) {
+    this.cans += amount;
+    this.lastLogin = this.getTimestamp();
+    this.Publish(PlayerEvents.AddCans)
   }
 
   public AddCredits(amount: number) { 
+    if(this.cans < amount) { return; }
     this.credits += amount;
+    this.cans -= amount;
     this.Publish(PlayerEvents.AddCredits);
   }
+
   public Credits(): number { return this.credits };
   public PayCredits(amount: number) { 
     this.credits -= amount; 

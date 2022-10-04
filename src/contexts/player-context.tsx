@@ -10,11 +10,7 @@ export const PlayerLoader = (props: any) => {
   const [player, setPlayer] = React.useState(new PlayerModel());
 
   React.useEffect(() => {
-    const json = localStorage.getItem('player');
-    if(json) {
-      const playerState = JSON.parse(json);
-      player.LoadFromState(playerState);
-    }
+    player.Load();
   });
 
   return <PlayerContext.Provider value={player}>

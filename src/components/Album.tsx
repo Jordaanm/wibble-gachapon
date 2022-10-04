@@ -34,7 +34,7 @@ export const Album = () => {
       <Dialog title="Album" isOpen={isOpen} canOutsideClickClose={true} onClose={closeDialog} className="album-modal">
         <div className="album-modal-layout">
           <div className="album">
-            { allWibbles.map(x => <AlbumItem info={x} select={setSelectedItem}/>)}
+            { allWibbles.map(x => <AlbumItem key={x.tableInfo.id} info={x} select={setSelectedItem}/>)}
           </div>
           <div className="details">
             {selectedItem && (

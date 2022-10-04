@@ -1,0 +1,17 @@
+.cans-display {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  margin-top: 1rem;
+  font-size: 2rem;
+  img {
+    max-height: 3rem;
+    width: auto;
+    margin-right: 0.5rem;
+  }
+  span {
+    font-weight: 600;
+    width: 4ex;
+  }
+}
