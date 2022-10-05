@@ -23,7 +23,7 @@ export function CansDisplay() {
     <Tooltip content="Generate more Stinky Fish Cans every hour">
       <div className="cans-display">
           <>
-            <img src="/can.png"/> x <span className='amount'>{cans}</span>
+            <div className="cans-icon"/> x <span className='amount'>{cans}</span>
           </>
       </div>
     </Tooltip>

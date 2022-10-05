@@ -6,10 +6,16 @@
   margin-top: 1rem;
   font-size: 2rem;
   color: #EEE;
-  img {
-    max-height: 3rem;
-    width: auto;
+  .cans-icon {
+    display: inline-block;
+    height: 3rem;
+    width: 4rem;
     margin-right: 0.5rem;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-image:url('/public/can.png');
   }
   span {
     font-weight: 600;
