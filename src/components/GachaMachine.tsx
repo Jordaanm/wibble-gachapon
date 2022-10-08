@@ -47,7 +47,7 @@ export function GachaMachine() {
   return (
     <div className="gacha-machine">
       <div className="machine">
-        <div className="dial" onMouseDown={onDialPress} onMouseUp={onDialRelease}></div>
+        <div className="dial"  onPointerDown={onDialPress} onPointerUp={onDialRelease}></div>
         <div className="slot"></div>
         <div className="credits" onClick={() => gachaModel?.AddCredits(1)}>
           <div className="credits--label">{credits}</div>

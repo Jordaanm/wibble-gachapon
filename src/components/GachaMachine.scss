@@ -111,3 +111,35 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  .bp4-multistep-dialog-panels {
+    flex-direction: column-reverse;
+
+    .bp4-multistep-dialog-left-panel {
+      flex: 0;
+      flex-direction: row;
+      overflow-y: auto;
+      overflow-x: scroll;
+      max-width: 100vw;
+    }
+
+  //   .bp4-multistep-dialog-right-panel {
+  //     flex: 1;      
+  //   }
+
+    .bp4-multistep-dialog-footer {
+      justify-content: flex-start;
+      .bp4-dialog-footer-actions {
+        justify-content: flex-end;
+        flex-direction: row-reverse;
+      }
+    }
+  }
+
+  .received-drop-modal {
+    .bp4-dialog-header {
+      max-width: 100vw;
+    }
+  }
+
+}
