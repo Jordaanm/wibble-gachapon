@@ -5,6 +5,7 @@ import { GachaModelContext } from '../contexts/gacha-context';
 import { DropInfo } from '../models/drops'
 import { PlayerDropInfo } from '../models/player-model';
 import "./Album.scss";
+import { GachaModel } from '../models/gacha-model';
 
 interface AlbumInfo {
   tableInfo: DropInfo;
@@ -19,7 +20,7 @@ export const Album = () => {
   const gachaModel = React.useContext(GachaModelContext);
 
   const openDialog = () => setIsOpen(true);
-  const closeDialog = () => setIsOpen(false);
+  const closeDialog = () => { setSelectedItem(null); setIsOpen(false); }
 
   const allWibbles: AlbumInfo[] = gachaModel?.GetAllDrops().map(tableInfo => {
     return {
@@ -40,12 +41,42 @@ export const Album = () => {
             {selectedItem && (
               <AlbumInfoView info={selectedItem} />
             )}
+            {!selectedItem && <AlbumLanding gachaModel={gachaModel} allWibbles={allWibbles} />}
           </div>
         </div>
       </Dialog>
     </div>
   );
 }
+
+const AlbumLanding = (props: {gachaModel: GachaModel|null, allWibbles: AlbumInfo[]}) => {
+  const {allWibbles, gachaModel} = props;
+  const totalWibbles = allWibbles.length;
+  const unlockedWibbles = allWibbles.filter(x => x?.playerInfo?.firstReceived).length;
+
+  const perRarity = [1,2,3,4,5].map(rarity => {
+    const wibblesOfRarity = allWibbles.filter(x => x?.tableInfo.rarity === rarity);
+    const unlocked = wibblesOfRarity.filter(x => x?.playerInfo?.firstReceived).length;
+
+    return {
+      rarity,
+      unlocked,
+      total: wibblesOfRarity.length,
+    }
+  })
+
+  return (
+    <div className="album-landing">
+      <span className='message'>You have unlocked {unlockedWibbles}/{totalWibbles}</span>
+      {perRarity.map(x => 
+        <span className='message'>
+          <span className={`rarity rarity-${x.rarity}`}></span>
+          {x.unlocked}/{x.total}
+        </span>
+      )}
+    </div>
+  );
+};
 
 const AlbumInfoView = (props: {info: AlbumInfo}) => {
   const {info} = props;

@@ -39,6 +39,42 @@
       font-size: 3rem;
       font-weight: 600;
     }
+
+    .album-landing {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      font-size: 0.8rem;
+      .message {
+        font-family: "Press Start 2P", cursive;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        .rarity {
+          display: inline-block;
+          width: 5em;
+          font-size: 1.5rem;
+          margin-right: 0.5rem;
+          text-align: right;
+          color: goldenrod;
+          &.rarity-1::after {
+            content:'☆:';      
+          }
+          &.rarity-2::after {
+            content:'☆☆:';      
+          }
+          &.rarity-3::after {
+            content:'☆☆☆:';      
+          }
+          &.rarity-4::after {
+            content:'☆☆☆☆:';      
+          }
+          &.rarity-5::after {
+            content:'☆☆☆☆☆:';      
+          }
+        }
+      }
+    }
   }
 }
 .album {
@@ -162,7 +198,7 @@
   .stats {
     display: flex;
     flex-direction: column;
-  }
+  } 
 }
 
 @media screen and (max-width: 768px) {
