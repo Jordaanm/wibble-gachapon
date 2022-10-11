@@ -51,27 +51,48 @@
         display: flex;
         align-items: center;
         .rarity {
+          font-size: 1rem;
           display: inline-block;
-          width: 5em;
-          font-size: 1.5rem;
+          width: 10rem;
+          margin-right: 0.5rem;
+          text-align: right;
+          &.rarity-1::before {
+            content:'☆';      
+            font-size: 1.5rem;
+            color: goldenrod;
+          }
+          &.rarity-2::before {
+            content:'☆☆';      
+            font-size: 1.5rem;
+            color: goldenrod;
+          }
+          &.rarity-3::before {
+            content:'☆☆☆';      
+            font-size: 1.5rem;
+            color: goldenrod;
+          }
+          &.rarity-4::before {
+            content:'☆☆☆☆';      
+            font-size: 1.5rem;
+            color: goldenrod;
+          }
+          &.rarity-5::before {
+            content:'☆☆☆☆☆';      
+            font-size: 1.5rem;
+            color: goldenrod;
+          }
+          &:after {
+            color: goldenrod;
+            content: ':';
+          }
+        }
+        .type {
+          display: inline-block;
+          width: 10rem;
+          font-size: 1rem;
           margin-right: 0.5rem;
           text-align: right;
           color: goldenrod;
-          &.rarity-1::after {
-            content:'☆:';      
-          }
-          &.rarity-2::after {
-            content:'☆☆:';      
-          }
-          &.rarity-3::after {
-            content:'☆☆☆:';      
-          }
-          &.rarity-4::after {
-            content:'☆☆☆☆:';      
-          }
-          &.rarity-5::after {
-            content:'☆☆☆☆☆:';      
-          }
         }
       }
     }

@@ -22,12 +22,12 @@ export const Album = () => {
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => { setSelectedItem(null); setIsOpen(false); }
 
-  const allWibbles: AlbumInfo[] = gachaModel?.GetAllDrops().map(tableInfo => {
+  const allWibbles: AlbumInfo[] = (gachaModel?.GetAllDrops().map(tableInfo => {
     return {
       tableInfo,
       playerInfo: playerModel.drops[tableInfo.id]
     }
-  }) || [];
+  }) || []).sort((a,b) => a.tableInfo.rarity - b.tableInfo.rarity);
 
   return (
     <div className="album-section">
@@ -63,7 +63,18 @@ const AlbumLanding = (props: {gachaModel: GachaModel|null, allWibbles: AlbumInfo
       unlocked,
       total: wibblesOfRarity.length,
     }
-  })
+  });
+
+  const perType = ["Wibble","Tiny Wib","Wibblet","Other"].map(type => {
+    const wibblesOfType = allWibbles.filter(x => x?.tableInfo.type === type);
+    const unlocked = wibblesOfType.filter(x => x?.playerInfo?.firstReceived).length;
+
+    return {
+      type,
+      unlocked,
+      total: wibblesOfType.length
+    }
+  });
 
   return (
     <div className="album-landing">
@@ -73,6 +84,12 @@ const AlbumLanding = (props: {gachaModel: GachaModel|null, allWibbles: AlbumInfo
           <span className={`rarity rarity-${x.rarity}`}></span>
           {x.unlocked}/{x.total}
         </span>
+      )}
+      {perType.map(x => 
+      <span className="message">
+        <span className={`type type-${x.type.toLowerCase()}`}>{x.type}:</span>
+        {x.unlocked}/{x.total}
+      </span>
       )}
     </div>
   );
