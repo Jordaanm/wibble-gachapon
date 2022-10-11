@@ -1,6 +1,9 @@
 import { PlayerModel } from './player-model';
 import { DropInfo, DropRate } from './drops';
 
+export const PITY_THRESHOLD_5STAR = 25;
+export const PITY_THRESHOLD_4STAR = 10;
+
 export class GachaModel {
 
   private player:PlayerModel;
@@ -33,11 +36,29 @@ export class GachaModel {
     if(!this.EnsurePlayer()) { return; }
 
     if(this.player.Credits() >= amount) {
+
+      let actualAmount = amount;
+      let pity = amount;
+
+      const guaranteed5Stars = Math.floor(amount / PITY_THRESHOLD_5STAR);
+      actualAmount -= guaranteed5Stars;
+      pity -=  guaranteed5Stars * PITY_THRESHOLD_5STAR;
       
-      const results: DropInfo[] = this.RollResults(amount);
-      
-      this.player.ReceiveDrops(results);
+      const guaranteed4Stars = Math.floor(pity / PITY_THRESHOLD_4STAR);
+      actualAmount -= guaranteed5Stars;
+
+      const spec4 = this.RollResults(guaranteed4Stars, 4);
+      const spec5 = this.RollResults(guaranteed5Stars, 5);
+      const normal = this.RollResults(actualAmount);
+
+      const results: DropInfo[] = [
+        ...normal,
+        ...spec4,
+        ...spec5,
+      ];
+            
       this.player.PayCredits(amount);
+      this.player.ReceiveDrops(results);
     }
   }
 
@@ -45,17 +66,17 @@ export class GachaModel {
     this.PerformRoll(this.player.Credits());
   }
 
-  RollResults(amount: number): DropInfo[] {
+  RollResults(amount: number, rarity: number = 0): DropInfo[] {
     const results: DropInfo[] = [];
     for(let x = 0; x < amount; ++x) {
-      results.push(this.RollResult())
+      results.push(this.RollResult(rarity))
     }
     return results;
   }
 
-  RollResult(): DropInfo {
+  RollResult(rarity: number = 0): DropInfo {
     const roll = Math.random() * 100;
-    const tier = this.GetTierForRoll(roll);
+    const tier = rarity || this.GetTierForRoll(roll);
     const result = this.GetRandomFromTier(tier);
 
     return result;

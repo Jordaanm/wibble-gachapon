@@ -2,6 +2,7 @@ import { Tooltip } from '@blueprintjs/core';
 import * as React from 'react';
 import { GachaModelContext } from '../contexts/gacha-context';
 import { PlayerContext } from '../contexts/player-context';
+import { PITY_THRESHOLD_4STAR, PITY_THRESHOLD_5STAR } from '../models/gacha-model';
 import { PlayerEvents, ReceivedDropNotification } from '../models/player-model';
 import './GachaMachine.scss';
 import { WibbleDropModal } from './WibbleDropModal';
@@ -45,7 +46,7 @@ export function GachaMachine() {
   )
 
   return (
-    <div className="gacha-machine">
+    <div className={`gacha-machine`}>
       <div className="machine">
         <div className="dial"  onPointerDown={onDialPress} onPointerUp={onDialRelease}></div>
         <div className="slot"></div>
@@ -58,6 +59,11 @@ export function GachaMachine() {
         <Tooltip content={info}>
           <div className="info-button">i</div>
         </Tooltip>
+        <div className='lights'>
+          <div className={`orb ${credits > 0 ? 'on' : 'off'}`}></div>
+          <div className={`orb ${credits >= PITY_THRESHOLD_4STAR ? 'on' : 'off'}`}></div>
+          <div className={`orb ${credits >= PITY_THRESHOLD_5STAR ? 'on' : 'off'}`}></div>
+        </div>
       </div>      
       <WibbleDropModal notifications={notifications} />
     </div>
