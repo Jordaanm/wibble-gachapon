@@ -6,6 +6,7 @@ import { PlayerLoader } from './contexts/player-context'
 import { Album } from './components/Album';
 import { CansDisplay } from './components/CansDisplay';
 import { AnimatedBackground, Bokeh } from './components/animated-background';
+import { Refunds } from './components/Refunds';
 function App() {
   return (
     <div className="App">
@@ -13,6 +14,7 @@ function App() {
       <PlayerLoader>
         <GachaDataLoader>
           <>
+            <Refunds />
             <Album />
             <GachaMachine />
             <CansDisplay />

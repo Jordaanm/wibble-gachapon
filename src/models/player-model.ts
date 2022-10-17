@@ -141,6 +141,12 @@ export class PlayerModel {
     this.Publish(PlayerEvents.PayCredits);
   }
 
+  public ReceiveRefund(amount: number) {
+    this.cans += amount;
+    this.Publish(PlayerEvents.AddCans);
+    this.Save();
+  }
+
 
   public ReceiveDrops(payload: DropInfo[]) {
     payload.forEach((d) => this.ReceiveDrop(d));
