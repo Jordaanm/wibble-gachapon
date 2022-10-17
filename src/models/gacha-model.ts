@@ -45,7 +45,7 @@ export class GachaModel {
       pity -=  guaranteed5Stars * PITY_THRESHOLD_5STAR;
       
       const guaranteed4Stars = Math.floor(pity / PITY_THRESHOLD_4STAR);
-      actualAmount -= guaranteed5Stars;
+      actualAmount -= guaranteed4Stars;
 
       const spec4 = this.RollResults(guaranteed4Stars, 4);
       const spec5 = this.RollResults(guaranteed5Stars, 5);
