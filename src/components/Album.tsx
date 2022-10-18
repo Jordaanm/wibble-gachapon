@@ -6,6 +6,7 @@ import { DropInfo } from '../models/drops'
 import { PlayerDropInfo } from '../models/player-model';
 import "./Album.scss";
 import { GachaModel } from '../models/gacha-model';
+import gsap from 'gsap';
 
 interface AlbumInfo {
   tableInfo: DropInfo;
@@ -13,14 +14,47 @@ interface AlbumInfo {
 }
 
 export const Album = () => {
+
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = React.useState<AlbumInfo|null>(null);
+
+  const openDialog = () => setIsOpen(true);
+  // const closeDialog = () => { setSelectedItem(null); setIsOpen(false); }
+  const closeDialog = () => { setIsOpen(false); }
+
+  return (
+    <div className="album-section">
+      <Button onClick={openDialog}>Collection</Button>
+      <Dialog title="Your Wibble Collection" isOpen={isOpen} canOutsideClickClose={true} onClose={closeDialog} className="album-modal">
+        <AlbumContent />
+      </Dialog>
+    </div>
+  );
+}
+
+const AlbumContent = () => {
+
+  const albumRef = React.useRef<HTMLDivElement>(null);
+  
+  React.useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".grid-item", {
+        duration: 0,
+        rotateY: 0,
+        force3D: true
+      }, {
+        rotateY: 360,
+        duration:3,
+        stagger: 0.1,
+        ease: "elastic", 
+        force3D: true        
+      });
+
+    }, albumRef)
+    return () => ctx.revert();
+  }, []);
 
   const playerModel = React.useContext(PlayerContext);
   const gachaModel = React.useContext(GachaModelContext);
-
-  const openDialog = () => setIsOpen(true);
-  const closeDialog = () => { setSelectedItem(null); setIsOpen(false); }
 
   const allWibbles: AlbumInfo[] = (gachaModel?.GetAllDrops().map(tableInfo => {
     return {
@@ -29,22 +63,19 @@ export const Album = () => {
     }
   }) || []).sort((a,b) => a.tableInfo.rarity - b.tableInfo.rarity);
 
+  const [selectedItem, setSelectedItem] = React.useState<AlbumInfo|null>(null);
+
   return (
-    <div className="album-section">
-      <Button onClick={openDialog}>Collection</Button>
-      <Dialog title="Your Wibble Collection" isOpen={isOpen} canOutsideClickClose={true} onClose={closeDialog} className="album-modal">
-        <div className="album-modal-layout">
-          <div className="album">
-            { allWibbles.map(x => <AlbumItem key={x.tableInfo.id} info={x} select={setSelectedItem}/>)}
-          </div>
-          <div className="details">
-            {selectedItem && (
-              <AlbumInfoView info={selectedItem} />
-            )}
-            {!selectedItem && <AlbumLanding gachaModel={gachaModel} allWibbles={allWibbles} />}
-          </div>
-        </div>
-      </Dialog>
+    <div className="album-modal-layout">
+      <div className="album" ref={albumRef}>
+        { allWibbles.map(x => <AlbumItem key={x.tableInfo.id} info={x} select={setSelectedItem}/>)}
+      </div>
+      <div className="details">
+        {selectedItem && (
+          <AlbumInfoView info={selectedItem} />
+        )}
+        {!selectedItem && <AlbumLanding gachaModel={gachaModel} allWibbles={allWibbles} />}
+      </div>
     </div>
   );
 }

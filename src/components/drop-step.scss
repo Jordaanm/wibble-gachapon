@@ -48,21 +48,26 @@
     font-size: 2rem;
     line-height: 2.8rem;
     padding-bottom: 0.25rem;
-    &.rarity-1::after {
-      content:'☆';      
-    }
-    &.rarity-2::after {
-      content:'☆☆';      
-    }
-    &.rarity-3::after {
-      content:'☆☆☆';      
-    }
-    &.rarity-4::after {
-      content:'☆☆☆☆';      
-    }
-    &.rarity-5::after {
-      content:'☆☆☆☆☆';      
-    }
+    // &.rarity-1::after {
+    //   content:'☆';      
+    // }
+    // &.rarity-2::after {
+    //   content:'☆☆';      
+    // }
+    // &.rarity-3::after {
+    //   content:'☆☆☆';      
+    // }
+    // &.rarity-4::after {
+    //   content:'☆☆☆☆';      
+    // }
+    // &.rarity-5::after {
+    //   content:'☆☆☆☆☆';      
+    // }
+  }
+
+  .rarity-row-icon {
+    display: inline-block;
+    padding: 0.25rem;
   }
 
   .title-row {
