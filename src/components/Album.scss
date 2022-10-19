@@ -135,6 +135,11 @@
 .album-info {
   overflow-y: scroll;
   max-height: 100%;
+
+  .content {
+    overflow: hidden;
+    padding: 0.5rem;
+  }
   .row {
     position: relative;
     display: flex;
@@ -166,27 +171,31 @@
     border-top: 2px solid gold;
     color: gold;
     background-color: #444;
+    margin: 0 -0.5rem;
   }
 
   .rarity {
     font-size: 2rem;
     line-height: 2.8rem;
     padding-bottom: 0.25rem;
-    &.rarity-1::after {
-      content:'☆';      
+    .rarity-row-icon {
+      display: inline-block;
     }
-    &.rarity-2::after {
-      content:'☆☆';      
-    }
-    &.rarity-3::after {
-      content:'☆☆☆';      
-    }
-    &.rarity-4::after {
-      content:'☆☆☆☆';      
-    }
-    &.rarity-5::after {
-      content:'☆☆☆☆☆';      
-    }
+    // &.rarity-1::after {
+    //   content:'☆';      
+    // }
+    // &.rarity-2::after {
+    //   content:'☆☆';      
+    // }
+    // &.rarity-3::after {
+    //   content:'☆☆☆';      
+    // }
+    // &.rarity-4::after {
+    //   content:'☆☆☆☆';      
+    // }
+    // &.rarity-5::after {
+    //   content:'☆☆☆☆☆';      
+    // }
   }
 
   .title-row {

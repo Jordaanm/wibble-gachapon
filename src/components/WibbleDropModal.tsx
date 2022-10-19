@@ -117,25 +117,29 @@ const WibbleDropPanel = (props: WibbleDropPanelProps) => {
         opacity: 0,
         x: -100
       })
-      .to('.title', {
-        duration: 0.2,
-        scale: 2.5,
-        delay: 0.1
+      .to('.rarity-row', {
+        duration: 0,
+        y: 1000,
+        delay: 0
+      })
+      .to('.rarity-row-icon', {
+        duration: 0,
+        opacity: 0,
+        delay: 0
       })
       .to('.title', {
-        duration: 0.1,
-        scale: 1.0,
-      })      
-      .to('.rarity-row-icon', {
-        duration: 0.2,
-        scale: 1.5,
-        stagger: 0.1,
-        delay: 0.3
-      }).to('.rarity-row-icon', {
-        duration: 0.2,
-        scale: 1.0,
-        stagger: 0.1,
+        duration: 0,
+        y: -100,
         delay: 0.0
+      })
+      .to('.title', {
+        duration: 0.3,
+        y: 0,
+      })
+      .to('.rarity-row', {
+        duration: 0.3,
+        y: 0,
+        delay: 0
       })
       .to('.type-row', {
         duration: 0.2,
@@ -146,6 +150,18 @@ const WibbleDropPanel = (props: WibbleDropPanelProps) => {
         duration: 0.2,
         opacity: 1,
         x: 0
+      })
+      .to('.rarity-row-icon', {
+        duration: 0.2,
+        scale: 1.5,
+        stagger: 0.1,
+        opacity: 1,
+        delay: 0.3
+      }).to('.rarity-row-icon', {
+        duration: 0.2,
+        scale: 1.0,
+        stagger: 0.1,
+        delay: 0.0
       });
     }, panelRef);
     return () => { ctx.revert();}

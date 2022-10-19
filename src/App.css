@@ -8,3 +8,7 @@
 .App h1 {
   margin-bottom: 1rem;
 }
+
+.bp4-overlay.bp4-overlay-open {
+  overflow: hidden;
+}

@@ -38,13 +38,13 @@ const AlbumContent = () => {
   React.useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(".grid-item", {
-        duration: 0,
-        rotateY: 0,
+        duration: 0.1,
+        scale: 0.8,
         force3D: true
       }, {
-        rotateY: 360,
-        duration:3,
-        stagger: 0.1,
+        scale: 1,
+        duration: .1,
+        stagger: 0.05,
         ease: "elastic", 
         force3D: true        
       });
@@ -72,7 +72,7 @@ const AlbumContent = () => {
       </div>
       <div className="details">
         {selectedItem && (
-          <AlbumInfoView info={selectedItem} />
+          <AlbumInfoView info={selectedItem} key={selectedItem.tableInfo.id}/>
         )}
         {!selectedItem && <AlbumLanding gachaModel={gachaModel} allWibbles={allWibbles} />}
       </div>
@@ -129,7 +129,75 @@ const AlbumLanding = (props: {gachaModel: GachaModel|null, allWibbles: AlbumInfo
 const AlbumInfoView = (props: {info: AlbumInfo}) => {
   const {info} = props;
   const { playerInfo, tableInfo} = info;
-  const { name, rarity, description, type } = tableInfo;
+  const { name, rarity, description, type, id } = tableInfo;
+
+  const panelRef = React.useRef(null);
+  const timeline = React.useRef<gsap.core.Timeline>(); 
+
+  
+  React.useEffect(() => {
+    const ctx = gsap.context(() => {
+      if(timeline.current) {
+        timeline.current.progress(0).kill();
+      }
+
+      timeline.current = gsap.timeline();
+
+      timeline.current
+      .to('.type-row, .description-row', {
+        duration: 0,
+        opacity: 0,
+        x: -100
+      })
+      .to('.rarity-row', {
+        duration: 0,
+        y: 1000,
+        delay: 0
+      })
+      .to('.rarity-row-icon', {
+        duration: 0,
+        opacity: 0,
+        delay: 0
+      })
+      .to('.title', {
+        duration: 0,
+        y: -100,
+        delay: 0.0
+      })
+      .to('.title', {
+        duration: 0.3,
+        y: 0,
+      })
+      .to('.rarity-row', {
+        duration: 0.3,
+        y: 0,
+        delay: 0
+      })
+      .to('.type-row', {
+        duration: 0.2,
+        opacity: 1,
+        x: 0
+      })
+      .to('.description-row', {
+        duration: 0.2,
+        opacity: 1,
+        x: 0
+      })
+      .to('.rarity-row-icon', {
+        duration: 0.2,
+        scale: 1.5,
+        stagger: 0.1,
+        opacity: 1,
+        delay: 0.3
+      }).to('.rarity-row-icon', {
+        duration: 0.2,
+        scale: 1.0,
+        stagger: 0.1,
+        delay: 0.0
+      });
+    }, panelRef);
+    return () => { ctx.revert();}
+  }, []);
 
   const firstReceived = playerInfo?.firstReceived;
   let dateString = "Never";
@@ -140,14 +208,18 @@ const AlbumInfoView = (props: {info: AlbumInfo}) => {
     return <h2>???</h2>
   }
 
+  const r = new Array(rarity).fill('☆')
+
   return (
-    <div className='album-info'>
-      <div className="content">
+    <div className='album-info' key={id}>
+      <div className="content" ref={panelRef}>
         <div className="title-row row">
           <span className='title'>{name}</span>
         </div>
         <div className="rarity-row row">
-          <span className={`rarity rarity-${rarity}`}></span>
+          <span className={`rarity rarity-${rarity}`}>
+            {r.map((x, i) => <span key={i} className="rarity-row-icon">{x}</span>)}
+          </span>
         </div>
         <div className="type-row row">
           <span className="label">Type: </span>
